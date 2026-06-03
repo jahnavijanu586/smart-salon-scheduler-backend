@@ -1,10 +1,10 @@
-# Smart Salon Scheduler
+# Smart Salon Scheduler Backend
 
 ## Overview
 
-Smart Salon Scheduler is a professional appointment management platform built using FastAPI and PostgreSQL.
+Smart Salon Scheduler is a production-style FastAPI backend designed for salon appointment management. The platform enables customers to discover salons, view practitioners, book appointments, leave reviews, and receive intelligent practitioner recommendations.
 
-The system allows customers to book salon appointments, view practitioner availability, receive practitioner recommendations, submit reviews, and manage appointments. Administrators can monitor revenue, practitioner performance, and booking analytics through secured dashboards.
+The system also provides analytics dashboards, revenue tracking, role-based access control, and external salon discovery integration.
 
 ---
 
@@ -12,165 +12,105 @@ The system allows customers to book salon appointments, view practitioner availa
 
 ### Authentication & Authorization
 
-* User Registration
-* User Login
 * JWT Authentication
-* Role-Based Access Control (RBAC)
-* Admin Protected Endpoints
-
-### Appointment Management
-
-* Book Appointment
-* View Appointments
-* Get Appointment by ID
-* Cancel Appointment
-* Reschedule Appointment
-* Prevent Double Booking
-* Slot Availability Checking
-
-### Practitioner Management
-
-* Add Practitioner
-* View All Practitioners
-* View Practitioner by ID
+* User Registration & Login
+* Role-Based Access Control (Admin / Customer)
 
 ### Salon Management
 
-* Add Salon
-* View All Salons
-* View Salon by ID
+* Create Salon
+* View Salons
+* Update Salon
+* Delete Salon
 
-### Review System
+### Practitioner Management
 
-* Add Customer Reviews
-* View Salon Reviews
+* Add Practitioners
+* View Practitioners
+* Practitioner-Salon Mapping
+
+### Appointment Booking
+
+* Book Appointment
+* Appointment Scheduling
+* Appointment Status Tracking
 
 ### Recommendation Engine
 
-* Recommend Practitioners based on:
+* Smart Practitioner Recommendation
+* Service-Based Matching
 
-  * Service Type
-  * Experience
-  * Ratings
+### Reviews & Ratings
+
+* Submit Reviews
+* View Reviews
+* Rating Analytics
 
 ### Analytics Dashboard
 
-* Revenue Dashboard
-* Booking Analytics
+* Revenue Analytics
 * Top Practitioner Analytics
-* Recommendation Analytics
+* Booking Statistics
 
-### System Monitoring
+### External Salon Discovery
 
-* Health Check Endpoint
+* Mock External Salon Search
+* Search Salons by City
+* Simulated Third-Party Salon Integration
+
+### Production Features
+
+* Docker Support
+* Environment Variables
+* Centralized Logging
+* Exception Handling
+* Modular Architecture
 
 ---
 
 ## Tech Stack
 
-### Backend
-
 * FastAPI
-* Python
-* SQLAlchemy ORM
-* Pydantic
-
-### Database
-
 * PostgreSQL
-
-### Security
-
+* SQLAlchemy
+* Pydantic
 * JWT Authentication
-* OAuth2 Password Flow
-* Password Hashing (bcrypt)
-
-### API Documentation
-
-* Swagger UI
-* OpenAPI
-
-### Deployment
-
 * Docker
+* Python
 
 ---
 
 ## Project Structure
 
-smart-salon-scheduler/
-
 backend/
 
-app/
+├── app/
 
-models/
+│ ├── ai/
 
-routes/
+│ ├── core/
 
-schemas/
+│ ├── data/
 
-services/
+│ ├── models/
 
-core/
+│ ├── routes/
 
-main.py
+│ ├── schemas/
 
-requirements.txt
+│ ├── services/
 
-Dockerfile
+│ ├── utils/
 
-README.md
+│ └── workers/
 
----
+├── Dockerfile
 
-## Database Models
+├── requirements.txt
 
-### User
+├── README.md
 
-* id
-* name
-* email
-* password
-* role
-
-### Salon
-
-* id
-* name
-* address
-* city
-* rating
-* phone
-* image_url
-
-### Practitioner
-
-* id
-* name
-* specialty
-* experience
-* salon_id
-
-### Appointment
-
-* id
-* customer_name
-* service_name
-* appointment_date
-* appointment_time
-* duration_minutes
-* practitioner_id
-* status
-* service_price
-
-### Review
-
-* id
-* customer_name
-* comment
-* rating
-* salon_id
+└── .env
 
 ---
 
@@ -178,11 +118,33 @@ README.md
 
 ### Authentication
 
-POST /signup
+POST /register
 
 POST /login
 
-GET /profile
+---
+
+### Salons
+
+GET /salons
+
+POST /salons
+
+GET /salons/{id}
+
+PUT /salons/{id}
+
+DELETE /salons/{id}
+
+---
+
+### Practitioners
+
+GET /practitioners
+
+POST /practitioners
+
+GET /practitioners/{id}
 
 ---
 
@@ -192,33 +154,7 @@ POST /book-appointment
 
 GET /appointments
 
-GET /appointments/{id}
-
-PUT /cancel-appointment/{id}
-
-PUT /reschedule-appointment/{id}
-
-GET /available-slots
-
----
-
-### Practitioners
-
-POST /add-practitioner
-
-GET /practitioners
-
-GET /practitioners/{id}
-
----
-
-### Salons
-
-POST /salons
-
-GET /salons
-
-GET /salons/{id}
+PUT /appointments/{id}
 
 ---
 
@@ -234,109 +170,71 @@ GET /reviews
 
 GET /analytics/dashboard/revenue
 
-GET /analytics/dashboard/bookings
-
-GET /analytics/dashboard/top-practitioners
+GET /analytics/top-practitioners
 
 ---
 
-### System
+### External Salon Discovery
 
-GET /health
+GET /external-salons
 
----
-
-## Installation
-
-### Clone Repository
-
-git clone <repository-url>
-
-cd smart-salon-scheduler
+GET /external-salons/search?city=Hyderabad
 
 ---
 
-### Create Virtual Environment
+## Environment Variables
 
-python -m venv venv
+Create a .env file:
 
----
-
-### Activate Environment
-
-Windows
-
-venv\Scripts\activate
-
-Linux/Mac
-
-source venv/bin/activate
-
----
-
-### Install Dependencies
-
-pip install -r requirements.txt
-
----
-
-### Configure Environment Variables
-
-Create a .env file
+DATABASE_URL=your_database_url
 
 SECRET_KEY=your_secret_key
 
 ALGORITHM=HS256
 
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-
-DATABASE_URL=postgresql://username:password@localhost/salon_db
+ACCESS_TOKEN_EXPIRE_MINUTES=60
 
 ---
 
-### Run Server
+## Running Locally
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+Run server:
 
 uvicorn app.main:app --reload
 
----
+Swagger Documentation:
 
-## API Documentation
-
-Swagger UI
-
-http://127.0.0.1:8000/docs
-
-ReDoc
-
-http://127.0.0.1:8000/redoc
+http://localhost:8000/docs
 
 ---
 
-## Health Check
+## Docker
 
-GET /health
+Build:
 
-Response
+docker build -t smart-salon-backend .
 
-{
-"status": "healthy",
-"message": "API is running"
-}
+Run:
+
+docker run -p 8000:8000 smart-salon-backend
 
 ---
 
-## Future Enhancements
+## Future Improvements
 
-* React Frontend
-* Customer Dashboard
-* Admin Dashboard UI
-* Online Payments
-* Notification Service
-* Email Reminders
-* SMS Reminders
-* AI-Based Scheduling
-* Docker Compose Deployment
-* Cloud Deployment
+* Google Places API Integration
+* Foursquare API Integration
+* Payment Gateway
+* Redis Caching
+* Celery Background Jobs
+* Email Notifications
+* SMS Notifications
+* AI Demand Forecasting
+* Multi-Salon Network Support
 
 ---
 
@@ -344,6 +242,7 @@ Response
 
 Jahnavi
 
-Smart Salon Scheduler Project
+Smart Salon Scheduler Backend Project
+
 
 Built using FastAPI, PostgreSQL, JWT Authentication, and SQLAlchemy.
