@@ -15,6 +15,7 @@ from app.routes.analytics_routes import router as analytics_router
 from app.models.log_model import AuditLog
 from app.core.exception_handler import global_exception_handler
 from app.core.logging_middleware import LoggingMiddleware
+from app.routes.external_salon_routes import router as external_salon_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -28,6 +29,7 @@ app.include_router(review_router)
 app.include_router(salon_router)
 app.include_router(dashboard_router)
 app.include_router(analytics_router)
+app.include_router(external_salon_router)
 
 @app.get("/")
 def home():
