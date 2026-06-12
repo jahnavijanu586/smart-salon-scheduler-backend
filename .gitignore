@@ -6,4 +6,8 @@ frontend/node_modules/
 frontend/dist/
 
 .vscode/
+.idea/
+
 *.log
+*.pyc
+.DS_Store
